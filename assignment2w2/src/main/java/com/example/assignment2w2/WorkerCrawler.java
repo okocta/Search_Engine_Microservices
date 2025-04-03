@@ -1,4 +1,4 @@
-package com.example.assignment2w1;
+package com.example.assignment2w2;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
@@ -53,7 +53,7 @@ public class WorkerCrawler {
                                     firstThreeLines.trim(),
                                     modified,
                                     content,
-                                    "worker-1"
+                                    "worker-2"
                             ));
                             totalFilesProcessed++;
 
@@ -78,12 +78,12 @@ public class WorkerCrawler {
 
 
     private void generateReport() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("index_report_worker.txt"))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("index_report_worker2.txt"))) {
             writer.write("Indexing Summary\n");
             writer.write("Total Files Processed: " + totalFilesProcessed + "\n");
             writer.write("Total Files Skipped: " + totalFilesSkipped + "\n");
             writer.write("Total Errors: " + totalErrors + "\n");
-            System.out.println("📄 Indexing report generated: index_report_worker1.txt");
+            System.out.println("📄 Indexing report generated: index_report_worker2.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }

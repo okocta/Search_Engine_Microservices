@@ -13,7 +13,12 @@ public class ManagerService {
     private RestTemplate restTemplate;
 
     private final List<String> workerUrls = List.of(
-            "http://localhost:3001/api/search"
+            "http://localhost:3001/api/search",
+            "http://localhost:3002/api/search",
+            "http://localhost:3003/api/search",
+            "http://localhost:3004/api/search",
+            "http://localhost:3005/api/search"
+
     );
 
     public List<TextFile> queryAllWorkers(String filename) {

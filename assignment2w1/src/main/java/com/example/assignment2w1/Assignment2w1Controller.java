@@ -13,11 +13,10 @@ public class Assignment2w1Controller {
     private WorkerCrawler crawler;
 
     @GetMapping("/search")
-    public List<TextFile> search(@RequestParam String query) {
-        String lowered = query.toLowerCase();
-
+    public List<TextFile> searchByFilename(@RequestParam String filename) {
         return crawler.getIndexedFiles().stream()
-                .filter(f -> f.getContent().toLowerCase().contains(lowered))
+                .filter(f -> f.getFilename().toLowerCase().contains(filename.toLowerCase()))
                 .toList();
     }
+
 }

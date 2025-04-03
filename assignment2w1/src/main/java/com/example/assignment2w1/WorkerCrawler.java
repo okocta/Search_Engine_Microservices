@@ -52,7 +52,8 @@ public class WorkerCrawler {
                                     "txt",
                                     firstThreeLines.trim(),
                                     modified,
-                                    content
+                                    content,
+                                    "worker-1"
                             ));
                             totalFilesProcessed++;
 
@@ -74,6 +75,7 @@ public class WorkerCrawler {
             e.printStackTrace();
         }
     }
+
 
     private void generateReport() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("index_report_worker.txt"))) {

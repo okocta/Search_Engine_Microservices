@@ -10,16 +10,19 @@ public class TextFile {
     private String firstThreeLines;
     private ZonedDateTime timestamp;
     private String content;
+    private String workerId;
 
     public TextFile() {}
 
-    public TextFile(String filePath, String filename, String extension, String firstThreeLines, ZonedDateTime timestamp, String content) {
+    public TextFile(String filePath, String filename, String extension, String firstThreeLines,
+                    ZonedDateTime timestamp, String content, String workerId) {
         this.filePath = filePath;
         this.filename = filename;
         this.extension = extension;
         this.firstThreeLines = firstThreeLines;
         this.timestamp = timestamp;
         this.content = content;
+        this.workerId = workerId;
     }
 
     public String getFilePath() { return filePath; }
@@ -39,4 +42,7 @@ public class TextFile {
 
     public String getContent() { return content; }
     public void setContent(String content) { this.content = content; }
+
+    public String getWorkerId() { return workerId; }
+    public void setWorkerId(String workerId) { this.workerId = workerId; }
 }

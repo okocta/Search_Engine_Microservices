@@ -21,14 +21,10 @@
 
 <h1>📂 Search Engine</h1>
 
-<select id="searchType">
-  <option value="filename">🔎 Search by Filename</option>
-  <option value="content">📝 Search by Content</option>
-</select>
 <input type="text" id="searchQuery" placeholder="Enter search term...">
 <button onclick="searchFiles()">Search</button>
 
-<h2>📁 Files in folder_test</h2>
+<h2>📁 Files from Workers</h2>
 
 <div id="results"></div>
 
@@ -36,47 +32,25 @@
   document.addEventListener("DOMContentLoaded", fetchAllFiles);
 
   function fetchAllFiles() {
-    fetch("http://localhost:8080/files")
+    fetch("http://localhost:8080/files/search?filename=")
             .then(response => response.json())
             .then(data => displayResults(data))
             .catch(error => console.error("Error fetching files:", error));
   }
 
   function searchFiles() {
-    let query = document.getElementById("searchQuery").value.trim();
-    let searchType = document.getElementById("searchType").value;
-
+    const query = document.getElementById("searchQuery").value.trim();
     if (!query) {
       alert("Please enter a search term!");
       return;
     }
 
-    // Ensure query is properly formatted for full-text search
-    let queryArray = query.split(/\s+/).filter(word => word !== ""); // Remove empty entries
-    let fullTextQuery = queryArray.join(' & ');  // Join words with ' & ' for AND logic
-
-    if (!fullTextQuery) {
-      alert("Invalid search query!");
-      return;
-    }
-
-    let url = searchType === "filename"
-            ? `http://localhost:8080/files/search?filename=${encodeURIComponent(fullTextQuery)}`
-            : `http://localhost:8080/files/search/content?query=${encodeURIComponent(fullTextQuery)}`;
-
-    console.log("Search URL:", url);  // Log the URL for debugging
-
-    fetch(url)
-            .then(response => {
-              if (!response.ok) {
-                throw new Error('Network response was not ok');
-              }
-              return response.json();
-            })
-            .then(data => displayResults(data, query))
+    fetch(`http://localhost:8080/files/search?filename=${query}`)
+            .then(response => response.json())
+            .then(data => displayResults(data))
             .catch(error => {
-              console.error("Error:", error);
-              alert("An error occurred during the search. Please try again.");
+              console.error("Error fetching results:", error);
+              alert("Something went wrong.");
             });
   }
 
@@ -95,33 +69,29 @@
                       <th>Filename</th>
                       <th>Path</th>
                       <th>Extension</th>
-                      <th>First 3 Lines</th>
+                      <th>Worker nr</th>
                       <th>Timestamp</th>
                     </tr>
                   </thead>
                   <tbody>`;
 
     data.forEach(file => {
-      let highlightedName = highlightText(file.filename, query);
-      let highlightedContent = highlightText(file.firstThreeLines, query);
+      let workerName = file.workerId || "unknown";
 
       table += `<tr>
-                  <td>${highlightedName}</td>
-                  <td>${file.filePath}</td>
-                  <td>${file.extension}</td>
-                  <td>${highlightedContent}</td>
-                  <td>${new Date(file.timestamp).toLocaleString()}</td>
-                </tr>`;
+              <td>${file.filename}</td>
+              <td>${file.filePath}</td>
+              <td>${file.extension}</td>
+              <td>${workerName}</td>
+              <td>${new Date(file.timestamp).toLocaleString()}</td>
+            </tr>`;
     });
+
 
     table += `</tbody></table>`;
     resultsDiv.innerHTML = table;
   }
 
-  function highlightText(text, query) {
-    if (!query) return text;
-    return text.replace(new RegExp(query, "gi"), match => `<span class="highlight">${match}</span>`);
-  }
 </script>
 
 </body>
